@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Machine.Specifications.Reporting.Integration;
 using Machine.Specifications.Runner;
@@ -17,7 +15,6 @@ namespace ParallelMSpecRunner
 {
     class Program
     {
-        private readonly static CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly static object _outputLockObject = new object();
         private readonly static TeamCityReporter _teamCityGlobalReporter = new TeamCityReporter(Console.WriteLine, new TimingRunListener());
 
@@ -35,7 +32,6 @@ namespace ParallelMSpecRunner
             }
 
             try {
-               
                 List<Assembly> assemblies = GetAssemblies(options);
                 if (assemblies.Count == 0) {
                     Console.WriteLine(Options.Usage());
@@ -49,50 +45,17 @@ namespace ParallelMSpecRunner
             }
         }
 
-        private static async Task<ExitCode> RunAllInParallel(List<Assembly> assemblies, RunOptions runOptions, int threads)
+        private static async Task<ExitCode> RunAllInParallel(List<Assembly> assemblies, RunOptions runOptions, uint threads)
         {
             _teamCityGlobalReporter.OnRunStart();
 
-            BlockingCollection<Assembly> workLoad = new BlockingCollection<Assembly>();
+            var worker = new MultiThreadedWorker<Assembly, ExitCode>(assemblies,
+                                                                     (assembly) => RunAssembly(assembly, runOptions),
+                                                                     threads);
+            IEnumerable<ExitCode> result = await worker.Run();
 
-            foreach (Assembly assembly in assemblies)
-                workLoad.Add(assembly);
-            // This means that when the collection is emtpy and TryTake is called - it will throw
-            workLoad.CompleteAdding();
-
-            List<Task<ExitCode>> tasks = new List<Task<ExitCode>>();
-
-            for (int i = 0; i < threads; i++) {
-
-                tasks.Add(Task.Run(() => {
-                    while (true) {
-                        Assembly assembly = null;
-                        bool takeSuccess = false;
-
-                        try {
-                            takeSuccess = workLoad.TryTake(out assembly, Timeout.Infinite, _cancellationTokenSource.Token);
-                        } catch (OperationCanceledException) {
-                            // cancellation token triggered
-                            return ExitCode.Success;
-                        }
-
-                        // collection is empty
-                        if (!takeSuccess)
-                            return ExitCode.Success;
-
-                        ExitCode status = RunAssembly(assembly, runOptions);
-                        if (status != ExitCode.Success) {
-                            // stop all processing across all workers
-                            _cancellationTokenSource.Cancel();
-                            return status;
-                        }
-                    }
-                }));
-
-            }
-
-            ExitCode[] result = await Task.WhenAll(tasks);
             _teamCityGlobalReporter.OnRunEnd();
+
             if (result.Any(e => e == ExitCode.Error))
                 return ExitCode.Error;
             else if (result.Any(e => e == ExitCode.Failure))
@@ -101,17 +64,14 @@ namespace ParallelMSpecRunner
                 return ExitCode.Success;
         }
 
-        private static void WriteOutput(BufferedAssemblyTeamCityReporter reporter)
-        {
-            lock (_outputLockObject) {
-                Console.Write(reporter.Buffer);
-                Console.Out.Flush();
-            }
-        }
-
         private static ExitCode RunAssembly(Assembly assembly, RunOptions runOptions)
         {
-            ISpecificationRunListener listener = new BufferedAssemblyTeamCityReporter(WriteOutput);
+            ISpecificationRunListener listener = new BufferedAssemblyTeamCityReporter((reporter) => {
+                lock (_outputLockObject) {
+                    Console.Write(reporter.Buffer);
+                    Console.Out.Flush();
+                }
+            });
 
             ISpecificationRunner specificationRunner = new AppDomainRunner(listener, runOptions);
 
@@ -119,9 +79,8 @@ namespace ParallelMSpecRunner
 
             if (listener is ISpecificationResultProvider) {
                 var errorProvider = (ISpecificationResultProvider) listener;
-                if (errorProvider.FailureOccurred) {
+                if (errorProvider.FailureOccurred)
                     return ExitCode.Failure;
-                }
             }
 
             return ExitCode.Success;

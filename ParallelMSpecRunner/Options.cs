@@ -38,7 +38,7 @@ namespace ParallelMSpecRunner
         [Option('t',
         "threads",
         HelpText = "Number of parallel processes")]
-        public int Threads { get; set; }
+        public uint Threads { get; set; }
 
         [OptionList('i',
         "include",

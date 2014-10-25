@@ -62,6 +62,7 @@
     <Compile Include="Reporting\FromMSpecCode\TeamCityReporter.cs" />
     <Compile Include="Reporting\FromMSpecCode\TeamCityServiceMessageWriter.cs" />
     <Compile Include="Reporting\BufferedAssemblyTeamCityReporter.cs" />
+    <Compile Include="Utils\MultiThreadedWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
