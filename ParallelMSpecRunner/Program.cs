@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Machine.Specifications.Reporting.Integration;
@@ -15,6 +16,7 @@ namespace ParallelMSpecRunner
 {
     class Program
     {
+        private static readonly StringBuilder _outputBuffer = new StringBuilder();
         private readonly static object _outputLockObject = new object();
         private readonly static TeamCityReporter _teamCityGlobalReporter = new TeamCityReporter(Console.WriteLine, new TimingRunListener());
 
@@ -54,6 +56,8 @@ namespace ParallelMSpecRunner
                                                                      threads);
             IEnumerable<ExitCode> result = await worker.Run();
 
+            FlushTeamCityOutput();
+
             _teamCityGlobalReporter.OnRunEnd();
 
             if (result.Any(e => e == ExitCode.Error))
@@ -64,14 +68,25 @@ namespace ParallelMSpecRunner
                 return ExitCode.Success;
         }
 
+        // We need to buffer all output unfortunately, because unlike in the serial execution 
+        // scenario we can end up in a sitution where whilst we are writing to the console another 
+        // thread is also and the output gets interwinded. (For example happens with Fluent Migrator)
+        //
+        private static void WriteToTeamCity(BufferedAssemblyTeamCityReporter reporter)
+        {
+            lock (_outputLockObject) {
+                _outputBuffer.Append(reporter.Buffer);
+            }
+        }
+
+        private static void FlushTeamCityOutput()
+        {
+            Console.Write(_outputBuffer.ToString());
+        }
+
         private static ExitCode RunAssembly(Assembly assembly, RunOptions runOptions)
         {
-            ISpecificationRunListener listener = new BufferedAssemblyTeamCityReporter((reporter) => {
-                lock (_outputLockObject) {
-                    Console.Write(reporter.Buffer);
-                    Console.Out.Flush();
-                }
-            });
+            ISpecificationRunListener listener = new BufferedAssemblyTeamCityReporter(WriteToTeamCity);
 
             ISpecificationRunner specificationRunner = new AppDomainRunner(listener, runOptions);
 
