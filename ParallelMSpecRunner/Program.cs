@@ -40,7 +40,7 @@ namespace ParallelMSpecRunner
                     return ExitCode.Failure;
                 }
 
-                return RunAllInParallel(assemblies, options.GetRunOptions(), options.Threads).Result;
+                return RunAllInParallel(assemblies, options.GetRunOptions(), (uint)options.Threads).Result;
             } catch (Exception ex) {
                 Console.WriteLine(ex.ToString());
                 return ExitCode.Error;
@@ -108,17 +108,6 @@ namespace ParallelMSpecRunner
             List<string> assemblyFiles = new List<string>();
             if (options.AssemblyFiles != null)
                 assemblyFiles.AddRange(options.AssemblyFiles);
-
-            if (options.TestsDirectory != null && Directory.Exists(options.TestsDirectory)) {
-                IEnumerable<string> files = Directory.EnumerateFiles(options.TestsDirectory, "*", SearchOption.AllDirectories);
-
-                if (options.TestsFilePatterns != null && options.TestsFilePatterns.Count > 0) {
-                    foreach (string filePattern in options.TestsFilePatterns)
-                        assemblyFiles.AddRange(files.Where(file => Regex.IsMatch(file, filePattern)));
-                } else { // look for *.dll
-                    assemblyFiles.AddRange(files.Where(file => Regex.IsMatch(file, @".*\.dll$")));
-                }
-            }
 
             foreach (string assemblyName in assemblyFiles) {
                 if (!File.Exists(assemblyName))

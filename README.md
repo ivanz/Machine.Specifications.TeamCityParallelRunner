@@ -1,51 +1,39 @@
 ## MSpec TeamCity Parallel Runner (mspec-teamcity-prunner.exe)
 
-This runner is similar to the standard runner with a few key differences:
+**`mspec-teamcity-prunner.exe`** is a **drop-in replacement** for the standard mspec runner which runs test assemblies **in parallel**.
 
-* Tests in multiple assemblies **are executed in parallel** (one thread per assembly). The default limit is 2 threads (so 2 assemblies in parallel at a time). This can be controlled by the `--threads` parameter.
-* Assemblies to run are specified using the `--assembly` in a `,` separated list. 
-	* **Note:** This is different from the standard console runner where the `--assembly` part is not required.
-* Or - you can specifiy a directory to recursively search for .dll files through `--directory` 
-	* Then you can use `--pattern` to apply a .NET Regex filter on the file list
+Use the `--threads N` parameter to specify how many assemblies to process at the same time. The default is 2.
 
-**Note**: With this runner the Tests output (number of tests and results) will be delayed until the end of the test run and you won't see an incrementing number of tests. You will be able to navigate around the results as usual.
-
-## Example Usage
-
-The following configuration has been verified to work:
-* TeamCity 8.1.x with a Command Line Runner
-
-```
-mspec-teamcity-prunner.exe -t 4 -d "%teamcity.build.workingDir%" -p "\\bin\\.*\.Tests.dll$"
-```
-
-or
-
-```
-mspec-teamcity-prunner.exe -t 4 -a Assembly1.dll,Assembly2.dll
-```
+Note that some command line options are not supported and wont' do anything if specified and have been kept only for compatibility. See below for details.
 
 ## Installation
 
-Right now the only method for installation is from source. Download the solution and build it and copy the binaries folder to your TeamCity instance if you want to take it for a spin. 
+Download, compile, copy `mspec-teamcity-runner.exe` to your TeamCity instance and replace the path to `mspec.exe` with the path to `mspec-teamcity-runner.exe`.
 
-Depending on where does https://github.com/machine/machine.specifications/issues/252 take us - I will either integrate it into MSpec itself or keep it as a separate util and get a NuGet package published.
+A NuGet package is on the *TODO* list under issue #1.
 
 ## Command Line Parameters
 
 ```
 
-Machine.Specifications TeamCity Parallel Runner
-Copyright (C) 2007-2014 Ivan Zlatev, Machine.Specifications Project (based heavily on the Machine.Specifications.ConsoleRunner)
+Machine.Specifications TeamCity Parallel Runner (mspec-teamcity-prunner)
+Copyright (C) 2007-2014 Ivan Zlatev, Machine.Specifications Project (based on the Machine.Specifications.ConsoleRunner)
 
-mspec-teamcity-prunner --threads 4 --assembly Test1.dll,Test2.dll
+mspec-teamcity-prunner.exe --thread 4 <assemblies>
 Options:
-  -a, --assembly              Specify an explicit comma-separated list of assemblies
-  -d, --directory             Optionally use to specify a directory to recursively look for *.dll files
-  -p, --pattern               Used in combination with -d provides a way to specify a patter (.Net regex) to search for - example: \\bin\\.*\.Tests.dll
+  --threads                   Number of threads to use. Default is 2.
   -f, --filters               Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags
   -i, --include               Execute all specifications in contexts with these comma delimited tags. Ex. -i "foo,bar,foo_bar"
   -x, --exclude               Exclude specifications in contexts with these comma delimited tags. Ex. -x "foo,bar,foo_bar"
-  -t, --threads               Number of parallel threads.
+  -t, --timeinfo              [NOT SUPPORTED] Shows time-related information in HTML output
+  -s, --silent                [NOT SUPPORTED] Suppress progress output (print fatal errors, failures and summary)
+  -p, --progress              [NOT SUPPORTED] Print progress output
+  -c, --no-color              [NOT SUPPORTED] Suppress colored console output
+  -w, --wait                  [NOT SUPPORTED] Wait 15 seconds for debugger to be attached
+  --teamcity                  [ALWAYS ON] Reporting for TeamCity CI integration (also auto-detected)
+  --no-teamcity-autodetect    [DOES NOTHING] Disables TeamCity autodetection
+  --html <PATH>               [NOT SUPPORTED] Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
+  --xml <PATH>                [NOT SUPPORTED] Outputs the XML report to the file referenced by the path
   -h, --help                  Shows this help message
+mspec-teamcity-prunner.exe --thread 4 <assemblies>
 ```
