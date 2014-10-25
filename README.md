@@ -2,9 +2,15 @@
 
 **`mspec-teamcity-prunner.exe`** is a **drop-in replacement** for the standard mspec runner which runs test assemblies **in parallel**.
 
-Use the `--threads N` parameter to specify how many assemblies to process at the same time. The default is 2.
+Use the `--threads N` parameter to specify how many assemblies to process at the same time.
 
-Note that some command line options are not supported and wont' do anything if specified and have been kept only for compatibility. See below for details.
+Some differences with the standard runner:
+
+* Some command line options are not supported and won't do anything if used. Details below.
+* There is no real-time progress monitoring ("10 tests ran", "15 test ran", etc.), but full results are available the same way as in the standard runner.
+
+
+Note that some command line options are not supported and won't do anything if specified and have been kept only for compatibility. See below for details.
 
 ## Installation
 
