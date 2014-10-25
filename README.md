@@ -7,7 +7,7 @@ This runner is similar to the standard runner with a few key differences:
 * Or - you can specifiy a directory to recursively search for .dll files through `--directory` 
 	* Then you can use `--pattern` to apply a .NET Regex filter on the file list
 
-***Example Usage***
+## Example Usage
 
 The following configuration has been verified to work:
 * TeamCity 8.1.x with a Command Line Runner
@@ -15,6 +15,12 @@ The following configuration has been verified to work:
 ```
 mspec-teamcity-prunner.exe -t 4 -d "%teamcity.build.workingDir%" -p "\\bin\\.*\.Tests.dll$"
 ```
+
+## Installation
+
+Right now the only method for installation is from source. Download the solution and build it and copy the binaries folder to your TeamCity instance if you want to take it for a spin. 
+
+Depending on where does https://github.com/machine/machine.specifications/issues/252 take us - I will either integrate it into MSpec itself or keep it as a separate util and get a NuGet package published.
 
 ## Command Line Parameters
 
