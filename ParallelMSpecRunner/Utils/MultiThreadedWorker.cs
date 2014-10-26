@@ -13,8 +13,7 @@ namespace ParallelMSpecRunner.Utils
         private readonly BlockingCollection<TWorkItem> _workLoad;
         private readonly uint _threads;
         private readonly Func<TWorkItem, TWorkResult> _worker;
-        private bool _hasRan;
-        private bool _hasFinished;
+        private int _hasRan;
         private readonly object _lockObject = new object();
 
         public MultiThreadedWorker(IEnumerable<TWorkItem> workload, 
@@ -40,24 +39,11 @@ namespace ParallelMSpecRunner.Utils
             _workLoad.CompleteAdding();
         }
 
-        public void Stop()
-        {
-            // avoid multiple calls
-            lock (_lockObject) {
-                if (_hasFinished)
-                    return;
-                else if (!_cancellationTokenSource.IsCancellationRequested)
-                    _cancellationTokenSource.Cancel();
-            }
-        }
-
         public async Task<IEnumerable<TWorkResult>> Run()
         {
             lock (_lockObject) {
-                if (_hasRan)
+                if (Interlocked.CompareExchange(ref _hasRan, 1, 0) == 1)
                     throw new InvalidOperationException("This worker has already ran.");
-
-                _hasRan = true;
             }
 
             List<Task<List<TWorkResult>>> tasks = new List<Task<List<TWorkResult>>>();
@@ -94,10 +80,6 @@ namespace ParallelMSpecRunner.Utils
 
         private void Dispose()
         {
-            lock (_lockObject) {
-                _hasFinished = true;
-            }
-
             _workLoad.Dispose();
             _cancellationTokenSource.Dispose();
         }
