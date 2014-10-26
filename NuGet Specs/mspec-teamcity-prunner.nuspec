@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>mspec-teamcity-prunner</id>
+        <version>1.0.0.0</version>
+        <title>MSpec Parallel Runner for TeamCity</title>
+        <authors>Ivan Zlatev</authors>
+        <licenseUrl>https://github.com/ivanz/mspec-teamcity-prunner/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/ivanz/mspec-teamcity-prunner</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>mspec-teamcity-prunner.exe is a drop-in replacement for the standard mspec runner, which runs test assemblies in parallel.</description>
+        <summary>mspec-teamcity-prunner.exe is a drop-in replacement for the standard mspec runner, which runs test assemblies in parallel.</summary>
+        <copyright>Copyright © Ivan Zlatev 2014</copyright>
+        <tags>MSpec TeamCity</tags>
+    </metadata>
+    <files>
+        <file src="..\ParallelMSpecRunner\bin\Release\CommandLine.dll" target="tools\CommandLine.dll" />
+        <file src="..\ParallelMSpecRunner\bin\Release\Machine.Specifications.Clr4.dll" target="tools\Machine.Specifications.Clr4.dll" />
+        <file src="..\ParallelMSpecRunner\bin\Release\Machine.Specifications.dll" target="tools\Machine.Specifications.dll" />
+        <file src="..\ParallelMSpecRunner\bin\Release\mspec-teamcity-prunner.exe" target="tools\mspec-teamcity-prunner.exe" />
+        <file src="..\ParallelMSpecRunner\bin\Release\mspec-teamcity-prunner.exe.config" target="tools\mspec-teamcity-prunner.exe.config" />
+        <file src="..\ParallelMSpecRunner\bin\Release\mspec-teamcity-prunner.pdb" target="tools\mspec-teamcity-prunner.pdb" />
+    </files>
+</package>
