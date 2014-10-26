@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace ParallelMSpecRunner.Utils
 {
-    internal class InvokeOnce<T>
+    public class InvokeOnce<T>
     {
         private readonly Action<T> _invocation;
         private int _wasInvoked;
