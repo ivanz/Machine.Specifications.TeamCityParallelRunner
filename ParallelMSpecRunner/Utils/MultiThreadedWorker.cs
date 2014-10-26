@@ -51,7 +51,7 @@ namespace ParallelMSpecRunner.Utils
             }
         }
 
-        public Task<IEnumerable<TWorkResult>> Run()
+        public async Task<IEnumerable<TWorkResult>> Run()
         {
             lock (_lockObject) {
                 if (_hasRan)
@@ -82,10 +82,14 @@ namespace ParallelMSpecRunner.Utils
                 }));
             }
 
-            return Task.WhenAll(tasks).ContinueWith((task) => {
+            List<TWorkResult>[] completedWork;
+            try {
+                completedWork = await Task.WhenAll(tasks);
+            } finally {
                 Dispose();
-                return task.Result.SelectMany(r => r);
-            });
+            }
+
+            return completedWork.SelectMany(item => item);
         }
 
         private void Dispose()
