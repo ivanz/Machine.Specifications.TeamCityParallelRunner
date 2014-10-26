@@ -14,9 +14,15 @@ Note that some command line options are not supported and won't do anything if s
 
 ## Installation
 
-Download, compile, copy `mspec-teamcity-runner.exe` to your TeamCity instance and replace the path to `mspec.exe` with the path to `mspec-teamcity-runner.exe`.
+### NuGet Package
 
-A NuGet package is on the *TODO* list under issue #1.
+The NuGet Package is here: https://www.nuget.org/packages/mspec-teamcity-prunner
+
+Once installed replace the path to `mspec.exe` in your `MSpec Build Step` with `tools\mspec-teamcity-runner.exe` from the package.
+
+### From Source
+
+Download, compile, copy `mspec-teamcity-runner.exe` to your TeamCity instance and replace the path to `mspec.exe` with the path to `mspec-teamcity-runner.exe` in a `MSpec Build Step`.
 
 ## Command Line Parameters
 
