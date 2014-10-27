@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Machine.Specifications.Reporting.Integration;
-using Machine.Specifications.Runner;
-using Machine.Specifications.Runner.Impl;
+using Machine.Specifications.Reporting.Integration.TeamCity;
+using Machine.Specifications.Runner.Utility;
 using ParallelMSpecRunner.Reporting;
 using ParallelMSpecRunner.Utils;
 
@@ -90,7 +89,7 @@ namespace ParallelMSpecRunner
 
             ISpecificationRunner specificationRunner = new AppDomainRunner(listener, runOptions);
 
-            specificationRunner.RunAssembly(assembly);
+            specificationRunner.RunAssembly(new AssemblyPath(assembly.Location));
 
             if (listener is ISpecificationResultProvider) {
                 var errorProvider = (ISpecificationResultProvider) listener;
