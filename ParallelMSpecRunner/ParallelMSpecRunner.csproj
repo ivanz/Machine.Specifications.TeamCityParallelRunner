@@ -37,14 +37,17 @@
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications.Reporting">
-      <HintPath>..\packages\Machine.Specifications.Reporting.0.9.0-Unstable0019\lib\net45\Machine.Specifications.Reporting.dll</HintPath>
+    <Reference Include="Machine.Specifications.Reporting, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.Reporting.0.9.0\lib\net45\Machine.Specifications.Reporting.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications.Reporting.Templates">
-      <HintPath>..\packages\Machine.Specifications.Reporting.0.9.0-Unstable0019\lib\net45\Machine.Specifications.Reporting.Templates.dll</HintPath>
+    <Reference Include="Machine.Specifications.Reporting.Templates, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.Reporting.0.9.0\lib\net45\Machine.Specifications.Reporting.Templates.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications.Runner.Utility">
-      <HintPath>..\packages\Machine.Specifications.Runner.Utility.0.9.0-Unstable0022\lib\net45\Machine.Specifications.Runner.Utility.dll</HintPath>
+    <Reference Include="Machine.Specifications.Runner.Utility, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.Runner.Utility.0.9.0\lib\net45\Machine.Specifications.Runner.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Spark">
       <HintPath>..\packages\Spark.1.7.5.3\lib\NET45\Spark.dll</HintPath>

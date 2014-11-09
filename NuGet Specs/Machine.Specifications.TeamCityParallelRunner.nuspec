@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>mspec-teamcity-prunner</id>
-        <version>1.0.0.0</version>
+        <id>Machine.Specifications.TeamCityParallelRunner</id>
+        <version>0.9.0</version>
         <title>MSpec Parallel Runner for TeamCity</title>
         <authors>Ivan Zlatev</authors>
         <licenseUrl>https://github.com/ivanz/mspec-teamcity-prunner/blob/master/LICENSE</licenseUrl>
@@ -14,11 +14,9 @@
         <tags>MSpec TeamCity</tags>
     </metadata>
     <files>
-        <file src="..\ParallelMSpecRunner\bin\Release\CommandLine.dll" target="tools\CommandLine.dll" />
-        <file src="..\ParallelMSpecRunner\bin\Release\Machine.Specifications.Clr4.dll" target="tools\Machine.Specifications.Clr4.dll" />
-        <file src="..\ParallelMSpecRunner\bin\Release\Machine.Specifications.dll" target="tools\Machine.Specifications.dll" />
-        <file src="..\ParallelMSpecRunner\bin\Release\mspec-teamcity-prunner.exe" target="tools\mspec-teamcity-prunner.exe" />
-        <file src="..\ParallelMSpecRunner\bin\Release\mspec-teamcity-prunner.exe.config" target="tools\mspec-teamcity-prunner.exe.config" />
-        <file src="..\ParallelMSpecRunner\bin\Release\mspec-teamcity-prunner.pdb" target="tools\mspec-teamcity-prunner.pdb" />
+        <file src="..\ParallelMSpecRunner\bin\Release\*.dll" target="tools" />
+        <file src="..\ParallelMSpecRunner\bin\Release\*.pdb" target="tools" />
+        <file src="..\ParallelMSpecRunner\bin\Release\*.exe" target="tools" exclude="..\ParallelMSpecRunner\bin\Release\*.vshost.*"/>
+        <file src="..\ParallelMSpecRunner\bin\Release\*.config" target="tools" exclude="..\ParallelMSpecRunner\bin\Release\*.vshost.*"/>
     </files>
 </package>

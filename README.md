@@ -1,4 +1,4 @@
-## MSpec TeamCity Parallel Runner (mspec-teamcity-prunner.exe)
+## MSpec TeamCity Parallel Runner (mspec-teamcity-prunner.exe / Machine.Specifications.TeamCityParallelRunner)
 
 **`mspec-teamcity-prunner.exe`** is a **drop-in replacement** for the standard mspec runner which runs test assemblies **in parallel**.
 
@@ -16,7 +16,7 @@ Note that some command line options are not supported and won't do anything if s
 
 ### NuGet Package
 
-The NuGet Package is here: https://www.nuget.org/packages/mspec-teamcity-prunner
+The NuGet Package is here: https://www.nuget.org/packages/Machine.Specifications.TeamCityParallelRunner
 
 Once installed replace the path to `mspec.exe` in your `MSpec Build Step` with `tools\mspec-teamcity-runner.exe` from the package.
 
