@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
 using System.Text;
-using Machine.Specifications;
 using Machine.Specifications.Reporting.Integration;
-using Machine.Specifications.Runner;
+using Machine.Specifications.Reporting.Integration.TeamCity;
+using Machine.Specifications.Runner.Utility;
 using ParallelMSpecRunner.Utils;
 
 namespace ParallelMSpecRunner.Reporting

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using CommandLine;
-using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Utility;
 
 namespace ParallelMSpecRunner
 {
@@ -138,7 +137,10 @@ namespace ParallelMSpecRunner
                 filters = File.ReadAllLines(FilterFile, Encoding.UTF8);
             }
 
-            return new RunOptions(IncludeTags ?? new string[0], ExcludeTags ?? new string[0], filters);
+            return RunOptions.Custom
+                .Include(IncludeTags ?? new string[0])
+                .Exclude(ExcludeTags ?? new string[0])
+                .FilterBy(filters);
         }
     }
 }
