@@ -1,6 +1,6 @@
-## MSpec TeamCity Parallel Runner (mspec-teamcity-prunner.exe / Machine.Specifications.TeamCityParallelRunner)
+## MSpec TeamCity Parallel Runner (mspec-teamcity-prunner.exe)
 
-**`mspec-teamcity-prunner.exe`** is a **drop-in replacement** for the standard mspec runner which runs test assemblies **in parallel**.
+**`mspec-teamcity-prunner.exe`** is a **drop-in replacement** for the standard mspec runner which runs test assemblies **in parallel**. The NuGet package is called 'Machine.Specifications.TeamCityParallelRunner'.
 
 Use the `--threads N` parameter to specify how many assemblies to process at the same time.
 
