@@ -31,7 +31,7 @@ Download, compile, copy `mspec-teamcity-runner.exe` to your TeamCity instance an
 Machine.Specifications TeamCity Parallel Runner (mspec-teamcity-prunner)
 Copyright (C) 2007-2014 Ivan Zlatev, Machine.Specifications Project (based on the Machine.Specifications.ConsoleRunner)
 
-mspec-teamcity-prunner.exe --thread 4 <assemblies>
+mspec-teamcity-prunner.exe --threads 4 <assemblies>
 Options:
   --threads                   Number of threads to use. Default is 2.
   -f, --filters               Filter file specifying contexts to execute (full type name, one per line). Takes precedence over tags
@@ -47,5 +47,5 @@ Options:
   --html <PATH>               [NOT SUPPORTED] Outputs the HTML report to path, one-per-assembly w/ index.html (if directory, otherwise all are in one file)
   --xml <PATH>                [NOT SUPPORTED] Outputs the XML report to the file referenced by the path
   -h, --help                  Shows this help message
-mspec-teamcity-prunner.exe --thread 4 <assemblies>
+mspec-teamcity-prunner.exe --threads 4 <assemblies>
 ```
