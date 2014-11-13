@@ -5,8 +5,8 @@
         <version>0.9.0</version>
         <title>MSpec Parallel Runner for TeamCity</title>
         <authors>Ivan Zlatev</authors>
-        <licenseUrl>https://github.com/ivanz/mspec-teamcity-prunner/blob/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/ivanz/mspec-teamcity-prunner</projectUrl>
+        <licenseUrl>https://github.com/ivanz/Machine.Specifications.TeamCityParallelRunner/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/ivanz/Machine.Specifications.TeamCityParallelRunner</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>mspec-teamcity-prunner.exe is a drop-in replacement for the standard mspec runner, which runs test assemblies in parallel.</description>
         <summary>mspec-teamcity-prunner.exe is a drop-in replacement for the standard mspec runner, which runs test assemblies in parallel.</summary>
