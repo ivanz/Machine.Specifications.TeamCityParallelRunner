@@ -39,20 +39,20 @@ namespace ParallelMSpecRunner
                     return ExitCode.Failure;
                 }
 
-                return RunAllInParallel(assemblies, options.GetRunOptions(), (uint)options.Threads).Result;
+                return RunAllInParallel(assemblies, options).Result;
             } catch (Exception ex) {
                 Console.WriteLine(ex.ToString());
                 return ExitCode.Error;
             }
         }
 
-        private static async Task<ExitCode> RunAllInParallel(List<Assembly> assemblies, RunOptions runOptions, uint threads)
+        private static async Task<ExitCode> RunAllInParallel(List<Assembly> assemblies, Options options)
         {
             _teamCityGlobalReporter.OnRunStart();
 
             var worker = new MultiThreadedWorker<Assembly, ExitCode>(assemblies,
-                                                                     (assembly) => RunAssembly(assembly, runOptions),
-                                                                     threads);
+                                                                     (assembly) => RunAssembly(assembly, options),
+                                                                     (uint)options.Threads);
             IEnumerable<ExitCode> result = await worker.Run();
 
             FlushTeamCityOutput();
@@ -71,9 +71,10 @@ namespace ParallelMSpecRunner
         // scenario we can end up in a sitution where whilst we are writing to the console another 
         // thread is also and the output gets interwinded. (For example happens with Fluent Migrator)
         //
-        private static void WriteToTeamCity(BufferedAssemblyTeamCityReporter reporter)
+        private static void WriteToTeamCity(IBuffer reporter)
         {
-            lock (_outputLockObject) {
+            lock (_outputLockObject)
+            {
                 _outputBuffer.Append(reporter.Buffer);
             }
         }
@@ -83,21 +84,32 @@ namespace ParallelMSpecRunner
             Console.Write(_outputBuffer.ToString());
         }
 
-        private static ExitCode RunAssembly(Assembly assembly, RunOptions runOptions)
+        private static ExitCode RunAssembly(Assembly assembly, Options options)
         {
-            ISpecificationRunListener listener = new BufferedAssemblyTeamCityReporter(WriteToTeamCity);
+            ISpecificationRunListener listener = GetListener(options);
 
-            ISpecificationRunner specificationRunner = new AppDomainRunner(listener, runOptions);
+            ISpecificationRunner specificationRunner = new AppDomainRunner(listener, options.GetRunOptions());
 
             specificationRunner.RunAssembly(new AssemblyPath(assembly.Location));
 
-            if (listener is ISpecificationResultProvider) {
+            if (listener is ISpecificationResultProvider)
+            {
                 var errorProvider = (ISpecificationResultProvider) listener;
                 if (errorProvider.FailureOccurred)
                     return ExitCode.Failure;
             }
 
             return ExitCode.Success;
+        }
+
+        private static ISpecificationRunListener GetListener(Options options)
+        {
+            if (options.StandardOutput)
+            {
+                return new BufferedAssemblyRunReporter(WriteToTeamCity, options);
+            }
+
+            return new BufferedAssemblyTeamCityReporter(WriteToTeamCity);
         }
 
         private static List<Assembly> GetAssemblies(Options options)
