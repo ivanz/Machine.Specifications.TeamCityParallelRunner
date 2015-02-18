@@ -11,7 +11,7 @@ namespace ParallelMSpecRunner.Reporting
     /// The idea here is that we buffer all output and then once we are done - 
     /// we signal the owner.
     /// </summary>
-    public class BufferedAssemblyTeamCityReporter : ISpecificationRunListener, ISpecificationResultProvider
+    public class BufferedAssemblyTeamCityReporter : ISpecificationRunListener, ISpecificationResultProvider, IBuffer
     {
         private readonly TeamCityReporter _reporter;
         private readonly StringBuilder _buffer;

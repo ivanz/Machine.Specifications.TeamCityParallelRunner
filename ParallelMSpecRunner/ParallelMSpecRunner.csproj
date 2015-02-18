@@ -61,6 +61,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Outputs\FailedSpecificationsSummary.cs" />
+    <Compile Include="Outputs\SilentOutput.cs" />
+    <Compile Include="Outputs\VerboseOutput.cs" />
+    <Compile Include="Reporting\DefaultBufferedConsole.cs" />
+    <Compile Include="Reporting\IBuffer.cs" />
+    <Compile Include="Reporting\IConsole.cs" />
+    <Compile Include="Outputs\IOutput.cs" />
+    <Compile Include="Reporting\RunListener.cs" />
+    <Compile Include="Reporting\BufferedAssemblyRunReporter.cs" />
     <Compile Include="Utils\ExitCode.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />

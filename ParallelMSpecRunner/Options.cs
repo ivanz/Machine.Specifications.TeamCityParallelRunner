@@ -25,6 +25,7 @@ namespace ParallelMSpecRunner
             HtmlPath = string.Empty;
             XmlPath = string.Empty;
             Threads = 2;
+            StandardOutput = false;
         }
 
 
@@ -67,6 +68,10 @@ namespace ParallelMSpecRunner
         [Option("teamcity",
           HelpText = "Reporting for TeamCity CI integration (also auto-detected)")]
         public bool TeamCityIntegration { get; set; }
+
+        [Option("standardoutput",
+          HelpText = "Standard MSpec Console runner output")]
+        public bool StandardOutput { get; set; }
 
         [Option("no-teamcity-autodetect",
           HelpText = "Disables TeamCity autodetection")]
